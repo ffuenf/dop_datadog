@@ -1,0 +1,7 @@
+init_config:
+
+instances:
+   -   host: <%= @datadog['redis']['host'] %>
+       port: <%= @datadog['redis']['port'] %>
+       tags:
+            -   instance:<%= @datadog['tags'] %>

@@ -1,0 +1,9 @@
+init_config:
+
+instances:
+  - server: <%= @datadog['mysql']['server'] %>
+    user: <%= @datadog['mysql']['user'] %>
+    pass: <%= @datadog['mysql']['password'] %>
+    port: <%= @datadog['mysql']['port'] %>
+    tags:
+         -   instance:<%= @datadog['tags'] %>
