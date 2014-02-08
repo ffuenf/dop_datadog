@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.0.2 (February 8, 2013)
+
+* update datadog-agent version
+* include logrotate
+
 ## 1.0.1 (October 6, 2013)
 
 * modularized recipes

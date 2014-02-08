@@ -16,6 +16,8 @@ It adds the following checks/services:
 Requirements
 ============
 
+* [logrotate](http://github.com/opscode-cookbooks/logrotate)
+
 Frameworks
 ---------
 * [dop](http://ffuenf.github.io/dop)
@@ -34,7 +36,7 @@ License and Author
 
 - Author:: Achim Rosenhagen (<a.rosenhagen@ffuenf.de>)
 
-- Copyright:: 2013, ffuenf
+- Copyright:: 2014, ffuenf
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
