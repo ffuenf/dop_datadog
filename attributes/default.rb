@@ -10,6 +10,7 @@ default['datadog']['application_key'] = node['datadog']['databag']['application_
 default['datadog']['tags'] = []
 default['datadog']['notify'] = []
 default['datadog']['conf_dir'] = "/etc/dd-agent/conf.d"
+default['datadog']['checks_dir'] = "/etc/dd-agent/checks.d"
 default['datadog']['log_dir'] = "/var/log/datadog"
 
 include_attribute "dop_datadog::mysql"

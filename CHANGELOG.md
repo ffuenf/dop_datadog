@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.0.3 (March 10, 2013)
+
+* fix checks.d dir attribute
+* pin cookbook files to dop_datadog cookbook
+
 ## 1.0.2 (February 8, 2013)
 
 * update datadog-agent version

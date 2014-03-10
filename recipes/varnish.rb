@@ -8,6 +8,7 @@ template "#{node['datadog']['conf_dir']}/varnish.yaml" do
   group "root"
   mode 0644
   source "datadog.varnish.yaml.erb"
+  cookbook "dop_datadog"
   variables({
     :datadog => node['datadog']
   })

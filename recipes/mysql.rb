@@ -32,6 +32,7 @@ template "#{node['datadog']['conf_dir']}/mysql.yaml" do
   group "root"
   mode 0644
   source "datadog.mysql.yaml.erb"
+  cookbook "dop_datadog"
   variables({
     :datadog => node['datadog']
   })
