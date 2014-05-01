@@ -3,7 +3,7 @@
 # # # # # #
 default['datadog']['databag'] = Chef::EncryptedDataBagItem.load("dop_datadog", "default")
 
-default['datadog']['agent_version'] = "1:4.1.0-321"
+default['datadog']['agent_version'] = "1:4.2.1-455"
 
 default['datadog']['api_key'] = node['datadog']['databag']['api_key']
 default['datadog']['application_key'] = node['datadog']['databag']['application_key']
