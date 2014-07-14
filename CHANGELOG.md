@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.0.4 (July 14, 2014)
+
+* update datadog-agent version
+
 ## 1.0.3 (March 10, 2013)
 
 * fix checks.d dir attribute
