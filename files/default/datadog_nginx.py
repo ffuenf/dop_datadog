@@ -1,10 +1,10 @@
 import re
-import time
 import urllib2
-import base64
+import urlparse
 
-from util import headers
+from util import headers, json
 from checks import AgentCheck
+from checks.utils import add_basic_auth
 
 class Nginx(AgentCheck):
     """Tracks basic nginx metrics via the status module
@@ -21,67 +21,143 @@ class Nginx(AgentCheck):
     Reading: 0 Writing: 2 Waiting: 6
 
     """
-
-    def __init__(self, name, init_config, agentConfig, instances=None):
-        AgentCheck.__init__(self, name, init_config, agentConfig, instances)
-        self.assumed_url = {}
-
     def check(self, instance):
         if 'nginx_status_url' not in instance:
-            raise Exception('nginx instance missing "nginx_status_url" value.')
-
-        url = self.assumed_url.get(instance['nginx_status_url'], instance['nginx_status_url'])
-
+            raise Exception('NginX instance missing "nginx_status_url" value.')
         tags = instance.get('tags', [])
 
-        req = urllib2.Request(url, None,
-            headers(self.agentConfig))
-        if 'nginx_status_user' in instance and 'nginx_status_password' in instance:
-            auth_str = '%s:%s' % (instance['nginx_status_user'], instance['nginx_status_password'])
-            encoded_auth_str = base64.encodestring(auth_str)
-            req.add_header("Authorization", "Basic %s" % encoded_auth_str)
-        request = urllib2.urlopen(req)
-        response = request.read()
+        response, content_type = self._get_data(instance)
+        if content_type == 'application/json':
+            metrics = self.parse_json(response, tags)
+        else:
+            metrics = self.parse_text(response, tags)
 
-        metric_count = 0
+        funcs = {
+            'gauge': self.gauge,
+            'rate': self.rate
+        }
+        for row in metrics:
+            try:
+                name, value, tags, metric_type = row
+                func = funcs[metric_type]
+                func(name, value, tags)
+            except Exception:
+                self.log.error(u'Could not submit metric: %s' % repr(row))
 
+    def _get_data(self, instance):
+        url = instance.get('nginx_status_url')
+        req = urllib2.Request(url, None, headers(self.agentConfig))
+        if 'user' in instance and 'password' in instance:
+            add_basic_auth(req, instance['user'], instance['password'])
+
+        # Submit a service check for status page availability.
+        parsed_url = urlparse.urlparse(url)
+        nginx_host = parsed_url.hostname
+        nginx_port = parsed_url.port or 80
+        service_check_name = 'nginx.can_connect'
+        service_check_tags = ['host:%s' % nginx_host, 'port:%s' % nginx_port]
+        try:
+            response = urllib2.urlopen(req)
+        except Exception:
+            self.service_check(service_check_name, AgentCheck.CRITICAL,
+                               tags=service_check_tags)
+            raise
+        else:
+            self.service_check(service_check_name, AgentCheck.OK,
+                               tags=service_check_tags)
+
+        body = response.read()
+        resp_headers = response.info()
+        return body, resp_headers.get('Content-Type', 'text/plain')
+
+    @classmethod
+    def parse_text(cls, raw, tags):
         # Thanks to http://hostingfu.com/files/nginx/nginxstats.py for this code
         # Connections
-        parsed = re.search(r'Active connections:\s+(\d+)', response)
+        output = []
+        parsed = re.search(r'Active connections:\s+(\d+)', raw)
         if parsed:
-            metric_count += 1
             connections = int(parsed.group(1))
-            self.gauge("nginx.net.connections", connections, tags=tags)
-        
+            output.append(('nginx.net.connections', connections, tags, 'gauge'))
+
         # Requests per second
-        parsed = re.search(r'\s*(\d+)\s+(\d+)\s+(\d+)', response)
+        parsed = re.search(r'\s*(\d+)\s+(\d+)\s+(\d+)', raw)
         if parsed:
-            metric_count += 1
+            conn = int(parsed.group(1))
             requests = int(parsed.group(3))
-            self.rate("nginx.net.request_per_s", requests, tags=tags)
-        
+            output.extend([('nginx.net.conn_opened_per_s', conn, tags, 'rate'),
+                           ('nginx.net.request_per_s', requests, tags, 'rate')])
+
         # Connection states, reading, writing or waiting for clients
-        parsed = re.search(r'Reading: (\d+)\s+Writing: (\d+)\s+Waiting: (\d+)', response)
+        parsed = re.search(r'Reading: (\d+)\s+Writing: (\d+)\s+Waiting: (\d+)', raw)
         if parsed:
-            metric_count += 1
-            reading, writing, waiting = map(int, parsed.groups())
-            self.gauge("nginx.net.reading", reading, tags=tags)
-            self.gauge("nginx.net.writing", writing, tags=tags)
-            self.gauge("nginx.net.waiting", waiting, tags=tags)
+            reading, writing, waiting = parsed.groups()
+            output.extend([
+                ("nginx.net.reading", int(reading), tags, 'gauge'),
+                ("nginx.net.writing", int(writing), tags, 'gauge'),
+                ("nginx.net.waiting", int(waiting), tags, 'gauge'),
+            ])
+        return output
 
-        if metric_count == 0:
-            if self.assumed_url.get(instance['nginx_status_url'], None) is None and url[-5:] != '?auto':
-                self.assumed_url[instance['nginx_status_url']]= '%s?auto' % url
-                self.warning("Assuming url was not correct. Trying to add ?auto suffix to the url")
-                self.check(instance)
+    @classmethod
+    def parse_json(cls, raw, tags=None):
+        if tags is None:
+            tags = []
+        parsed = json.loads(raw)
+        metric_base = 'nginx'
+        output = []
+        all_keys = parsed.keys()
+
+        tagged_keys = [('caches', 'cache'), ('server_zones', 'server_zone'),
+                       ('upstreams', 'upstream')]
+
+        # Process the special keys that should turn into tags instead of
+        # getting concatenated to the metric name
+        for key, tag_name in tagged_keys:
+            metric_name = '%s.%s' % (metric_base, tag_name)
+            for tag_val, data in parsed.get(key, {}).iteritems():
+                tag = '%s:%s' % (tag_name, tag_val)
+                output.extend(cls._flatten_json(metric_name, data, tags + [tag]))
+
+        # Process the rest of the keys
+        rest = set(all_keys) - set([k for k, _ in tagged_keys])
+        for key in rest:
+            metric_name = '%s.%s' % (metric_base, key)
+            output.extend(cls._flatten_json(metric_name, parsed[key], tags))
+
+        return output
+
+    @classmethod
+    def _flatten_json(cls, metric_base, val, tags):
+        ''' Recursively flattens the nginx json object. Returns the following:
+            [(metric_name, value, tags)]
+        '''
+        output = []
+        if isinstance(val, dict):
+            # Pull out the server as a tag instead of trying to read as a metric
+            if 'server' in val and val['server']:
+                server = 'server:%s' % val.pop('server')
+                if tags is None:
+                    tags = [server]
+                else:
+                    tags = tags + [server]
+            for key, val2 in val.iteritems():
+                metric_name = '%s.%s' % (metric_base, key)
+                output.extend(cls._flatten_json(metric_name, val2, tags))
+
+        elif isinstance(val, list):
+            for val2 in val:
+                output.extend(cls._flatten_json(metric_base, val2, tags))
+
+        elif isinstance(val, bool):
+            # Turn bools into 0/1 values
+            if val:
+                val = 1
             else:
-                raise Exception("No metrics were fetched for this instance. Make sure that %s is the proper url." % instance['nginx_status_url'])
+                val = 0
+            output.append((metric_base, val, tags, 'gauge'))
 
-    @staticmethod
-    def parse_agent_config(agentConfig):
-        if not agentConfig.get('nginx_status_url'):
-            return False
+        elif isinstance(val, (int, float)):
+            output.append((metric_base, val, tags, 'gauge'))
 
-        return {
-            'instances': [{'nginx_status_url': agentConfig.get('nginx_status_url')}]
-        }
+        return output

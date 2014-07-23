@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.0.5 (July 23, 2014)
+
+* fix php_ping check
+* fix php_status check
+* fix pagespeed check
+* fix nginx check
+
 ## 1.0.4 (July 14, 2014)
 
 * update datadog-agent version
