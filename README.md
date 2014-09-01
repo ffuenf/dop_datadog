@@ -1,38 +1,102 @@
-Description
+dop_datadog
 ===========
+[![GitHub tag](http://img.shields.io/github/tag/ffuenf/dop_datadog.svg)][tag]
+[![Build Status](http://img.shields.io/travis/ffuenf/dop_datadog.svg)][travis]
+[![Gittip](http://img.shields.io/gittip/arosenhagen.svg)][gittip]
 
-This cookbook is intended as wrapper-cookbook around the [datadog](https://github.com/DataDog/chef-datadog) cookbook when used as [dop](http://ffuenf.github.io/dop) component.
+[tag]: https://github.com/ffuenf/dop_datadog/tags
+[travis]: https://travis-ci.org/ffuenf/dop_datadog
+[gittip]: https://www.gittip.com/arosenhagen
 
-It configures the following services:
-* mysql
-* redis
-* varnish
+dop_datadog is a wrapper-cookbook around the [datadog](https://github.com/DataDog/chef-datadog) cookbook when used as [dop](http://ffuenf.github.io/dop) component.
 
-It adds the following checks/services:
-* nginx
-* ngx_pagespeed
-* php (php-ping/php-fpm monitoring)
+Dependencies
+------------
 
-Requirements
-============
+This cookbook depends on the following community cookbooks.
 
-* [logrotate](http://github.com/opscode-cookbooks/logrotate)
+* datadog
 
-Frameworks
+Platform
+--------
+
+The following platforms are supported and tested:
+
+* Debian 6.x
+* Debian 7.x
+* Ubuntu 14.04.x
+
+Other Debian family distributions are assumed to work.
+
+Data_bags
 ---------
-* [dop](http://ffuenf.github.io/dop)
 
-Cookbooks
----------
-* [dop_base](https://github.com/ffuenf/dop_base)
-* [dop_php](https://github.com/ffuenf/dop_php)
-* [dop_mysql](https://github.com/ffuenf/dop_mysql)
-* [dop_nginx](https://github.com/ffuenf/dop_nginx)
-* [dop_varnish](https://github.com/ffuenf/dop_varnish)
-* [datadog](https://github.com/DataDog/chef-datadog)
+We assume to use an encrypted databag which holds sensitive information:
+```
+{ 
+  "id": "default", 
+  "api_key": "YOURAPIKEY", 
+  "application_key": "YOURAPPKEY", 
+  "mysql": {
+    "user": "datadog", 
+    "password": "insecurepassword",
+    "server": "localhost",
+    "port": 3306
+  },
+  "php": {
+    "status": {
+      "user": "datadog", 
+      "password": "insecurepassword" 
+    },
+    "ping": {
+      "user": "datadog", 
+      "password": "insecurepassword" 
+    }
+  },
+  "pagespeed": {
+    "user": "datadog", 
+    "password": "insecurepassword" 
+  },
+  "redis": {
+    "host": "127.0.0.1", 
+    "port": 6379 
+  }
+}
+```
+
+Development
+-----------
+1. Fork the repository from GitHub.
+2. Clone your fork to your local machine:
+
+        $ git clone git@github.com:USER/dop_datadog.git
+
+3. Create a git branch
+
+        $ git checkout -b my_bug_fix
+
+4. **Write tests**
+5. Make your changes/patches/fixes, committing appropriately
+6. Run the tests: `foodcritic`, `rubocop`, `kitchen test`
+7. Push your changes to GitHub
+8. Open a Pull Request
+
+Testing
+-------
+
+dop_datadog is on [Travis CI](http://travis-ci.org/ffuenf/dop_datadog) which tests against multiple Chef and Ruby versions.
+
+The following Rake tasks are provided for automated testing of the cookbook:
+
+* `rake rubocop` - Run [RuboCop] style and lint checks
+* `rake foodcritic` - Run [Foodcritic] lint checks
+* `rake integration` - Run [Test Kitchen] integration tests (provisions a
+  Vagrant VM using this cookbook and then tests the infrastructure with
+  [Serverspec])
+* `rake test` - Run all tests
 
 License and Author
-==================
+------------------
 
 - Author:: Achim Rosenhagen (<a.rosenhagen@ffuenf.de>)
 

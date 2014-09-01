@@ -1,0 +1,29 @@
+{ 
+  "id": "default", 
+  "api_key": "YOURAPIKEY", 
+  "application_key": "YOURAPPKEY", 
+  "mysql": {
+    "user": "datadog", 
+    "password": "insecurepassword",
+    "server": "localhost",
+    "port": 3306
+  },
+  "php": {
+    "status": {
+      "user": "datadog", 
+      "password": "insecurepassword" 
+    },
+    "ping": {
+      "user": "datadog", 
+      "password": "insecurepassword" 
+    }
+  },
+  "pagespeed": {
+    "user": "datadog", 
+    "password": "insecurepassword" 
+  },
+  "redis": {
+    "host": "127.0.0.1", 
+    "port": 6379 
+  }
+}

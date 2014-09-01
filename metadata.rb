@@ -1,18 +1,15 @@
-maintainer       "Achim Rosenhagen"
-maintainer_email "a.rosenhagen@ffuenf.de"
-license          "Apache 2.0"
-description      "installs/configures dop_datadog"
+maintainer 'Achim Rosenhagen'
+maintainer_email 'a.rosenhagen@ffuenf.de'
+license 'Apache 2.0'
+description 'installs/configures dop_datadog'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-name             "dop_datadog"
-version          "1.0.5"
+name 'dop_datadog'
+version '1.1.0'
 
-%w{ debian }.each do |os|
+%w(debian).each do |os|
   supports os
 end
 
-%w{ 
-  dop_base
-  datadog
-}.each do |ressource|
+%w(datadog).each do |ressource|
   depends ressource
 end

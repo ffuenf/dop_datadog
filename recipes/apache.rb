@@ -3,4 +3,4 @@
 # Recipe:: apache
 #
 
-include_recipe "datadog::apache"
+include_recipe 'datadog::apache'

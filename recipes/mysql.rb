@@ -3,14 +3,14 @@
 # Recipe:: mysql
 #
 
-package "python-mysqldb"
+package 'python-mysqldb'
 database_user = node['datadog']['mysql']['user']
 database_password = node['datadog']['mysql']['password']
 database_host = node['datadog']['mysql']['server']
 database_connection = {
-  :host => database_host,
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
+  host: database_host,
+  username: 'root',
+  password: node['mysql']['server_root_password']
 }
 
 # create the database user
@@ -23,17 +23,17 @@ end
 # grant all privileges to user on database
 mysql_database_user database_user do
   connection database_connection
-  privileges ["REPLICATION CLIENT"]
+  privileges ['REPLICATION CLIENT']
   action :grant
 end
 
 template "#{node['datadog']['conf_dir']}/mysql.yaml" do
-  owner "root"
-  group "root"
+  owner 'root'
+  group 'root'
   mode 0644
-  source "datadog.mysql.yaml.erb"
-  cookbook "dop_datadog"
-  variables({
-    :datadog => node['datadog']
-  })
+  source 'datadog.mysql.yaml.erb'
+  cookbook 'dop_datadog'
+  variables(
+    datadog: node['datadog']
+  )
 end
