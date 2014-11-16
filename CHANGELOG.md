@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.1.1 (November 16, 2014)
+
+* update versions
+* serverspec v2 support
+* update kitchen
+
 ## 1.1.0 (September 2, 2014)
 
 * update/integrate testsuites: test-kitchen, foodcritic, rubocop, travis-ci
