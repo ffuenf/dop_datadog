@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.0 (November 27, 2014)
+
+* move host/port of redis/mysql out of databag
+
 ## 1.1.0 (September 2, 2014)
 
 * update/integrate testsuites: test-kitchen, foodcritic, rubocop, travis-ci

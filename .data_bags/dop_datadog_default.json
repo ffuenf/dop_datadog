@@ -4,9 +4,7 @@
   "application_key": "YOURAPPKEY", 
   "mysql": {
     "user": "datadog", 
-    "password": "insecurepassword",
-    "server": "localhost",
-    "port": 3306
+    "password": "insecurepassword"
   },
   "php": {
     "status": {
@@ -21,9 +19,5 @@
   "pagespeed": {
     "user": "datadog", 
     "password": "insecurepassword" 
-  },
-  "redis": {
-    "host": "127.0.0.1", 
-    "port": 6379 
   }
 }
