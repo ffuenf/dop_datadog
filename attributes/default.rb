@@ -3,8 +3,8 @@
 # # # # # #
 default['datadog']['databag'] = Chef::EncryptedDataBagItem.load('dop_datadog', 'default')
 
-default['datadog']['agent_version'] = '1:5.0.0-496'
-default['datadog']['chef_handler_version'] = '0.4.0'
+default['datadog']['agent_version'] = '1:5.0.5-523'
+default['datadog']['chef_handler_version'] = '0.6.0'
 
 default['datadog']['api_key'] = node['datadog']['databag']['api_key']
 default['datadog']['application_key'] = node['datadog']['databag']['application_key']
@@ -18,3 +18,4 @@ include_attribute 'dop_datadog::mysql'
 include_attribute 'dop_datadog::php'
 include_attribute 'dop_datadog::pagespeed'
 include_attribute 'dop_datadog::redis'
+include_attribute 'dop_datadog::nginx'

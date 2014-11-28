@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.1 (November 28, 2014)
+
+* add password protected nginx status page config
+* refactor password protection in general (also to match dop structure)
+* add pagespeed template
+
 ## 1.2.0 (November 27, 2014)
 
 * move host/port of redis/mysql out of databag

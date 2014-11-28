@@ -7,16 +7,14 @@
     "password": "insecurepassword"
   },
   "php": {
-    "status": {
-      "user": "datadog", 
-      "password": "insecurepassword" 
-    },
-    "ping": {
-      "user": "datadog", 
-      "password": "insecurepassword" 
-    }
+    "user": "datadog", 
+    "password": "insecurepassword" 
   },
   "pagespeed": {
+    "user": "datadog", 
+    "password": "insecurepassword" 
+  },
+  "nginx": {
     "user": "datadog", 
     "password": "insecurepassword" 
   }
