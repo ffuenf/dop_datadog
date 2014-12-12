@@ -25,6 +25,7 @@ The following platforms are supported and tested:
 * Debian 6.x
 * Debian 7.x
 * Ubuntu 14.04.x
+* Ubuntu 14.10.x
 
 Other Debian family distributions are assumed to work.
 
@@ -39,27 +40,19 @@ We assume to use an encrypted databag which holds sensitive information:
   "application_key": "YOURAPPKEY", 
   "mysql": {
     "user": "datadog", 
-    "password": "insecurepassword",
-    "server": "localhost",
-    "port": 3306
+    "password": "insecurepassword"
   },
   "php": {
-    "status": {
-      "user": "datadog", 
-      "password": "insecurepassword" 
-    },
-    "ping": {
-      "user": "datadog", 
-      "password": "insecurepassword" 
-    }
+    "user": "datadog", 
+    "password": "insecurepassword" 
   },
   "pagespeed": {
     "user": "datadog", 
     "password": "insecurepassword" 
   },
-  "redis": {
-    "host": "127.0.0.1", 
-    "port": 6379 
+  "nginx": {
+    "user": "datadog", 
+    "password": "insecurepassword" 
   }
 }
 ```

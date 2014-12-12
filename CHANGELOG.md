@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+
+## 1.2.2 (December 12, 2014)
+
+* add proper host to mysql user
+
 ## 1.2.1 (November 28, 2014)
 
 * add password protected nginx status page config
