@@ -1,8 +1,0 @@
-init_config:
-
-instances:
-    -   nginx_status_url: <%= @datadog['nginx']['status_url'] %>
-        user: <%= @datadog['nginx']['user'] %>
-        password: <%= @datadog['nginx']['password'] %>
-        tags:
-            -   instance:<%= @datadog['nginx']['tags'] %>

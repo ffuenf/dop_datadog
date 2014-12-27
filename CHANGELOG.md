@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.3 (December 27, 2014)
+
+* remove nginx (use from standard cookbook)
+* update testsuite
 
 ## 1.2.2 (December 12, 2014)
 
