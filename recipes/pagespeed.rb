@@ -10,3 +10,14 @@ cookbook_file "#{node['datadog']['checks_dir']}/pagespeed.py" do
   group 'root'
   mode 0644
 end
+
+template "#{node['datadog']['conf_dir']}/pagespeed.yaml" do
+  owner 'root'
+  group 'root'
+  mode 0644
+  source 'datadog.pagespeed.yaml.erb'
+  cookbook 'dop_datadog'
+  variables(
+    datadog: node['datadog']
+  )
+end

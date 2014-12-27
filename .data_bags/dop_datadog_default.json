@@ -4,26 +4,18 @@
   "application_key": "YOURAPPKEY", 
   "mysql": {
     "user": "datadog", 
-    "password": "insecurepassword",
-    "server": "localhost",
-    "port": 3306
+    "password": "insecurepassword"
   },
   "php": {
-    "status": {
-      "user": "datadog", 
-      "password": "insecurepassword" 
-    },
-    "ping": {
-      "user": "datadog", 
-      "password": "insecurepassword" 
-    }
+    "user": "datadog", 
+    "password": "insecurepassword" 
   },
   "pagespeed": {
     "user": "datadog", 
     "password": "insecurepassword" 
   },
-  "redis": {
-    "host": "127.0.0.1", 
-    "port": 6379 
+  "nginx": {
+    "user": "datadog", 
+    "password": "insecurepassword" 
   }
 }

@@ -1,0 +1,8 @@
+init_config:
+
+instances:
+    -   pagespeed_status_url: <%= @datadog['pagespeed']['status_url'] %>
+        pagespeed_status_user: <%= @datadog['pagespeed']['user'] %>
+        pagespeed_status_password: <%= @datadog['pagespeed']['password'] %>
+        tags:
+            -   instance:<%= @datadog['pagespeed']['tags'] %>

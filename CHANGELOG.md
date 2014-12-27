@@ -2,11 +2,20 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
-## 1.1.1 (November 16, 2014)
 
-* update versions
-* serverspec v2 support
-* update kitchen
+## 1.2.2 (December 12, 2014)
+
+* add proper host to mysql user
+
+## 1.2.1 (November 28, 2014)
+
+* add password protected nginx status page config
+* refactor password protection in general (also to match dop structure)
+* add pagespeed template
+
+## 1.2.0 (November 27, 2014)
+
+* move host/port of redis/mysql out of databag
 
 ## 1.1.0 (September 2, 2014)
 
