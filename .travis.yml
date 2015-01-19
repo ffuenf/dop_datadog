@@ -1,15 +1,11 @@
 language: ruby
+bundler_args: --without kitchen_vagrant --without development
+sudo: false
 rvm:
-- 2.1.5
 - 2.2.0
-before_script:
-- bundle exec berks vendor
 script:
 - bundle exec rubocop
 - bundle exec foodcritic -f any .
-branches:
-  only:
-  - master
 env:
   global:
   - secure: DNstNRbzHZTG2Z4buOkZWk9hZJ0W05GRsdoLijX5itumsyPc5qOF3/fDZMfhLJDoqUoDQt24vSzbLSVIvUDgcwagt2XvmpGNUb0TaJCyctWLMuG4B6dcnQPc5JEAxwDOtNN+0Tl8i247mtWlZTlM1/tNjvBYwontfqMdVzFSqrk=

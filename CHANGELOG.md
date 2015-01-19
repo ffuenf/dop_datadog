@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.4 (January 19, 2015)
+
+* add database port
+* update test-suite
+
 ## 1.2.3 (December 27, 2014)
 
 * remove nginx (use from standard cookbook)

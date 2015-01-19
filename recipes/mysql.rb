@@ -7,8 +7,10 @@ package 'python-mysqldb'
 database_user = node['datadog']['mysql']['user']
 database_password = node['datadog']['mysql']['password']
 database_host = node['datadog']['mysql']['server']
+database_port = node['datadog']['mysql']['port']
 database_connection = {
   host: database_host,
+  port: database_port,
   username: 'root',
   password: node['mysql']['server_root_password']
 }
