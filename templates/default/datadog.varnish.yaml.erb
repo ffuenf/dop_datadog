@@ -2,6 +2,6 @@ init_config:
 
 instances:
     -   varnishstat: /usr/bin/varnishstat
-        name: <%= @datadog['name'] %>
+        name: <%= @datadog['varnish']['name'] %>
         tags:
             -   instance:<%= @datadog['tags'] %>
