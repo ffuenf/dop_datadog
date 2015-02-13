@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.5 (February 13, 2015)
+
+* make varnish instance configurable
+
 ## 1.2.4 (January 19, 2015)
 
 * add database port
