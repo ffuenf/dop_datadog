@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.6 (July 6, 2015)
+
+* add version contraint to datadog community cookbook
+
 ## 1.2.5 (February 13, 2015)
 
 * make varnish instance configurable
