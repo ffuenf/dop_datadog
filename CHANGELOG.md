@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of dop_datadog.
 
+## 1.2.7 (July 21, 2016)
+
+* remove cookbook attribute in logrotate_app (@sheuser)
+
 ## 1.2.6 (July 6, 2015)
 
 * add version contraint to datadog community cookbook

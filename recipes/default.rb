@@ -13,7 +13,6 @@ include_recipe 'datadog::dd-handler'
 include_recipe 'datadog::dogstatsd-ruby'
 
 logrotate_app 'datadog' do
-  cookbook 'logrotate'
   path "#{node['datadog']['log_dir']}/*.log"
   frequency 'daily'
   rotate 2
